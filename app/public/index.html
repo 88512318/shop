@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+		<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+		<title>XXX系统</title>
+		<script type="text/javascript">
+			function getuserinfo(){
+				$.ajax({
+					url:"/whoami?t="+new Date().getTime(), //t参数防止缓存影响
+					type:"post",
+					success:function(d){
+						if(d.code==0){
+							$("#userinfo").html("当前账号："+d.user.username+"，姓名："+d.user.xm+"，单位："+d.user.dw);
+							$("#logout").show();
+						}
+						else{$("#login").show();}
+					},
+					error:function(){alert("发生错误");$("#login").show();}
+				});
+			}
+			function logout(){
+				$.ajax({
+					url:"/logout?t="+new Date().getTime(), //t参数防止缓存影响
+					type:"get",
+					success:function(d){window.location.href="login.html";},
+					error:function(){window.location.href="login.html";}
+				});
+			}			
+			$(getuserinfo); //页面加载完成后执行getuserinfo
+		</script>
+	</head>
+	<body>
+		<div style="background-color: #f8c489; width: 400px;height: 200px;">这是主页内容</div>
+		<div id="userinfo"></div>
+		<div id="logout" style="text-align: center;width: 400px;display: none;"><a href=#" onclick="logout();">注销</a></div>
+		<div id="login" style="text-align: center;width: 400px;display: none;"><a href="login.html">登录</a></div>
+	</body></html>
